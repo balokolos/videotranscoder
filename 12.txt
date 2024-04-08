@@ -1,0 +1,60 @@
+[root@localhost adminuser]# netstat -rnv
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+0.0.0.0         192.168.0.1     0.0.0.0         UG        0 0          0 enp0s3
+192.168.0.0     0.0.0.0         255.255.255.0   U         0 0          0 enp0s3
+[root@localhost adminuser]#
+[root@localhost adminuser]#
+[root@localhost adminuser]# ifconfig
+enp0s3: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.0.145  netmask 255.255.255.0  broadcast 192.168.0.255
+        inet6 2001:e68:5429:208d:a00:27ff:fe01:a64f  prefixlen 64  scopeid 0x0<global>
+        inet6 fc01::a00:27ff:fe01:a64f  prefixlen 64  scopeid 0x0<global>
+        inet6 2001:e68:5429:85dd:a00:27ff:fe01:a64f  prefixlen 64  scopeid 0x0<global>
+        inet6 fe80::a00:27ff:fe01:a64f  prefixlen 64  scopeid 0x20<link>
+        ether 08:00:27:01:a6:4f  txqueuelen 1000  (Ethernet)
+        RX packets 41630  bytes 19015423 (18.1 MiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 20344  bytes 12090047 (11.5 MiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 364  bytes 190310 (185.8 KiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 364  bytes 190310 (185.8 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+[root@localhost adminuser]#
+
+[root@localhost adminuser]# nmcli
+enp0s3: connected to enp0s3
+        "Intel 82540EM"
+        ethernet (e1000), 08:00:27:01:A6:4F, hw, mtu 1500
+        ip4 default, ip6 default
+        inet4 192.168.0.145/24
+        route4 192.168.0.0/24 metric 100
+        route4 default via 192.168.0.1 metric 100
+        inet6 fc01::a00:27ff:fe01:a64f/64
+        inet6 2001:e68:5429:208d:a00:27ff:fe01:a64f/64
+        inet6 2001:e68:5429:85dd:a00:27ff:fe01:a64f/64
+        inet6 fe80::a00:27ff:fe01:a64f/64
+        route6 fe80::/64 metric 1024
+        route6 2001:e68:5429:85dd::/64 metric 100
+        route6 2001:e68:5429:208d::/64 metric 100
+        route6 fc01::/64 metric 100
+        route6 default via fe80::be22:28ff:fe56:3af4 metric 100
+
+lo: unmanaged
+        "lo"
+        loopback (unknown), 00:00:00:00:00:00, sw, mtu 65536
+
+DNS configuration:
+        servers: 192.168.0.1
+        interface: enp0s3
+
+        servers: fe80::be22:28ff:fe56:3af4
+        interface: enp0s3
+
