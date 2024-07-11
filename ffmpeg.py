@@ -18,7 +18,10 @@ output_folder = 'C:/Users/abrafit/Desktop/playground/done'
 # Load the transcoded files from the JSON file
 transcoded_files = load_transcoded_files()
 
+
 while True:
+    print ('Checking the asset')
+    time.sleep(5)
     # Scan the input folder for new MXF files
     for file in os.listdir(input_folder):
         if file.endswith('.mxf') and file not in transcoded_files:
@@ -29,7 +32,7 @@ while True:
             #output_file = os.path.join(output_folder, file + '.mp4')
             ffmpeg_command = ['ffmpeg', '-i', input_file, '-c:v', 'libx264', '-crf', '18', '-f', 'mpegts', output_file]
 
-        
+            
             subprocess.run(ffmpeg_command)
 
             # Add the transcoded file to the list
@@ -38,5 +41,9 @@ while True:
             # Save the updated transcoded files list
             save_transcoded_files(transcoded_files)
 
+            # os.remove(input_folder + '/' + file)
+            os.remove(os.path.join(input_folder, file))
+    
+            print (file + ' DONE')
     # Sleep for 5 seconds before checking for new files again
     time.sleep(5)
