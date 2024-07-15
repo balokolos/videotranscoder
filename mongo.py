@@ -5,17 +5,22 @@ uri = "mongodb+srv://balok:balok@cluster0.3xvak04.mongodb.net/?retryWrites=true&
 client = MongoClient(uri, server_api=ServerApi('1'))
 
 #Send a ping to confirm a successful connection
-try:
-    client.admin.command('ping')
-    print("Pinged your deployment. You successfully connected to MongoDB!")
-except Exception as e:
-    print(e)
+# try:
+#     client.admin.command('ping')
+#     print("Pinged your deployment. You successfully connected to MongoDB!")
+# except Exception as e:
+#     print(e)
 
 database = client["test"]
 collection = database["testcoll"]
                     
-# To find() all the entries inside collection name 'myTable' 
-cursor = collection.find()
-for record in cursor: 
-    print(record) 
+# # To find() all the entries inside collection name 'myTable' 
+# cursor = collection.find()
+# for record in cursor: 
+#     print(record) 
 
+mydict = { "name": "Peter", "status": "Done" }
+
+x = collection.insert_one(mydict)
+
+print(x.inserted_id)
