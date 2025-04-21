@@ -7,7 +7,7 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
 # Connect to MongoDB
-uri = "<MONGO_URI>"
+uri = "mongodb+srv://balok:balok@cluster0.3xvak04.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 client = MongoClient(uri, server_api=ServerApi('1'))
 database = client["test"]
 collection = database["testcoll"]
@@ -32,6 +32,10 @@ def load_transcoded_files():
         transcoded_files.append(record["name"])
     return transcoded_files
 
+def check_input_file(file):
+    if not file.endswith('.mxf'):
+        raise ValueError(f'Error: {file} is not an mxf file')
+
 def main():
     while True:
         print('Checking the asset')
@@ -42,6 +46,7 @@ def main():
             for file in input_files - transcoded_files:
                 if file.endswith('.mxf'):
                     input_file = os.path.join(input_dir, file)
+                    check_input_file(input_files) # will not do anything, just to test exception raise.
                     base, _ = os.path.splitext(file)
                     output_file = os.path.join(output_dir, base + '.ts')
                     ffmpeg_command = [
@@ -63,22 +68,12 @@ def main():
             print(f"Unexpected error occurred: {e}")
         except FileNotFoundError as e:
             print(f"File not found error: {e}")
+        except ValueError as e:
+            print(f"File not type mxf: {e}")
             
         finally:
-            if file not in transcoded_files:
-                # Add the transcoded file to the DB
-                dict = {"name": file , "status": "DONE"}
-                # Save the updated transcoded files list
-                save_transcoded_files(dict)
-                # os.remove(input_folder + '/' + file)
-                os.remove(os.path.join(input_dir, file))
-                logging.info(f'Removed file: {file}')
-            elif file is None:
-                logging.info(f'No file to process')
-                print(f"{file} new file to process")
-            else:
-                logging.info(f'File already exist: {file}')
-                print(f"{file} already exist")
+            logging.info('Waiting for 10 seconds before next check...')
+            time.sleep(10)
 
 if __name__ == "__main__":
     main()
